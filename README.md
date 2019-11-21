@@ -50,9 +50,10 @@ python3 bilateral.py
 ```
 
 C++:
-For C++ basically follows cmake flow. Before cmake, adjust LIDAR_FILE in cpp code line 27 to your own data directory. 
+Basically follows cmake flow. Before cmake, adjust LIDAR_FILE in cpp code line 27 to your own data directory. 
 ```
 mkdir build
+cd build
 cmake ..
 make
 ./bilateral
