@@ -26,11 +26,36 @@ To evaluate depth and image matching by sight, you can see both the inverse of t
 
 ![Sample image](Output/inversedepth.jpg?raw=true "Title")
 
-You can find c++ implementation of another method in reference[2].
-
 You can basically launch the main script by following Matlab command.
 ```
 > main
+```
+
+In this forked branch, python3-numpy reproduction and C++ Eigen reproduction is added. 
+
+## Dependencies
+Python thirdparty:
+*`python-opencv`
+*`python-numpy`
+
+C++:
+*`Eigen`
+*`OpenCV`
+*`OpenMp`
+
+## Usage
+Python:
+```
+python3 bilateral.py
+```
+
+C++:
+For C++ basically follows cmake flow. Before cmake, adjust LIDAR_FILE in cpp code line 27 to your own data directory. 
+```
+mkdir build
+cmake ..
+make
+./bilateral
 ```
 
 ## Reference
