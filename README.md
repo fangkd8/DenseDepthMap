@@ -35,13 +35,13 @@ In this forked branch, python3-numpy reproduction and C++ Eigen reproduction is 
 
 ## Dependencies
 Python thirdparty:
-*`python-opencv`
-*`python-numpy`
+* `python-opencv`
+* `python-numpy`
 
 C++:
-*`Eigen`
-*`OpenCV`
-*`OpenMp`
+* `Eigen`
+* `OpenCV`
+* `OpenMp`
 
 ## Usage
 Python:
