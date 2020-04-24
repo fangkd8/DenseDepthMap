@@ -49,7 +49,6 @@ public:
     double minVal, maxVal;
     cv::Point minLoc, maxLoc;
     cv::minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc);
-    // cout << minVal << " " << maxVal << endl;
     result = 255 * (result - minVal) / (maxVal - minVal);
     result.convertTo(result, CV_8UC1);
     cv::imshow("result", result);
@@ -76,8 +75,6 @@ public:
   MatrixXf points_filter(MatrixXf &P, MatrixXf &data){
     data = P * data;
     vector<int> v;
-    // omp_set_num_threads(4);
-    // cout << "fuck pragma" << endl;
     omp_set_num_threads(16);
     #pragma omp parallel
     {
@@ -94,11 +91,9 @@ public:
       #pragma omp critical
       v.insert(v.end(), v1.begin(), v1.end());
     }
-    // cout << v.size() << endl;
     MatrixXf result;
     result.resize(3, v.size());
     result.fill(0.);
-    // cout << "fuck" << endl;
     cout << data.rows() << " " << data.cols() << endl;
     omp_set_num_threads(16);
     #pragma omp parallel
@@ -106,11 +101,8 @@ public:
       MatrixXf res_private;
       res_private.resize(3, v.size());
       res_private.fill(0.);
-      // cout << v.size() << endl;
-      // cout << data.cols() << endl;
       #pragma omp for nowait
       for (auto i = 0; i < v.size(); i++){
-        // cout << i << " " << v[i] << result.cols() << endl;
         res_private(0, i) = data(0, v[i]) / data(2, v[i]);
         res_private(1, i) = data(1, v[i]) / data(2, v[i]);
         res_private(2, i) = data(2, v[i]);
@@ -122,21 +114,13 @@ public:
     return result;
   }
 
-  // MatrixXf parallel_points(MatrixXf)
-
   cv::Mat DenseMap(MatrixXf &data, int grid){
-    // TODO: directly solve bilateral in each index in matrix.
-    // OR try opencv bilateral on sparse map.
     int ng = 2 * grid + 1;
 
     cv::Mat map, mD;
     map = cv::Mat::zeros(ROW, COL, CV_32FC1);
     mD = cv::Mat::zeros(ROW, COL, CV_32FC1);
-    // map.setTo(1000000);
-    // cout << test_map[0][50] << " " << test_mD[9][99] << endl;
-    // cout << omp_get_num_threads() << endl;
     omp_set_num_threads(8);
-    // cout << omp_get_num_threads() << endl;
     #pragma omp parallel
     {
       #pragma omp for nowait
@@ -151,7 +135,6 @@ public:
     cv::Mat output;
     output = cv::Mat::zeros(ROW, COL, CV_32FC1);
     omp_set_num_threads(128);
-    // cout << omp_get_num_threads() << endl;
     #pragma omp parallel
     {
       #pragma omp for nowait
@@ -164,8 +147,6 @@ public:
           float s = 0;
           for (auto r = -grid; r < grid + 1; r++){
             for (auto c = -grid; c < grid + 1; c++){
-              // output(i, j) += mD(i+r, j+c)/mD(i+r, j+c);
-              // float s = map.at<unsigned short>(i+r, j+c);
               float map_val = map.at<float>(i+r, j+c);
               if (map_val != 0){
                 output.at<float>(i, j) += 
